@@ -11,8 +11,7 @@ public class PlayerScript : MonoBehaviour
     private Animator animator;
 
     private float xInput;
-    private bool isMoving;
-
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,15 +25,20 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         xInput = Input.GetAxis("Horizontal");
+        
+        PlayerMovement();
 
+        AnimatorController();
+    }
+
+    private void PlayerMovement() {
         rb.linearVelocityX = xInput * moveSpeed;
 
         if (Input.GetKeyDown(KeyCode.Space)) {
-            
+            PlayerJump();
+
         }
 
-
-        AnimatorController();
     }
 
     private void PlayerJump() {
@@ -43,7 +47,7 @@ public class PlayerScript : MonoBehaviour
     }
 
     private void AnimatorController() {
-        isMoving = xInput != 0f;
+        bool isMoving = xInput != 0f;
 
         animator.SetBool("IsMoving", isMoving);
 
