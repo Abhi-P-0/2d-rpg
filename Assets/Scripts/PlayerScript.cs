@@ -2,23 +2,25 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-
+    [Header("Player Parameters")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
 
+    [Header("Dash Info")]
+    [SerializeField] private float dashSpeed;
+    [SerializeField] private float dashDuration;
+    [SerializeField] private float dashTime;
+
+    [Header("Ground collosion")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance;
 
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private Transform bullSpawnPoint;
-
-
+    
     private Rigidbody2D rb;
     private CapsuleCollider2D collider2D;
     private Animator animator;
 
     private float xInput;
-    private bool isGrounded = false;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,11 +37,17 @@ public class PlayerScript : MonoBehaviour
     {
         PlayerInput();
 
-        if (Input.GetKeyDown(KeyCode.R)) {
-            Instantiate(bullet, bullSpawnPoint.position, Quaternion.identity);
-        }
-        
         PlayerMovement();
+
+        dashTime -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            dashTime = dashDuration;
+        }
+
+        if (dashTime > 0) {
+            Debug.Log("Dashing");
+        }
 
         AnimatorController();
     }
@@ -58,7 +66,14 @@ public class PlayerScript : MonoBehaviour
     }
 
     private void PlayerMovement() {
-        rb.linearVelocityX = xInput * moveSpeed;
+        if (dashTime > 0) {
+            //rb.linearVelocityX = xInput * dashSpeed;
+            rb.linearVelocity = new Vector2(xInput * dashSpeed, 0);
+
+        } else {
+            rb.linearVelocityX = xInput * moveSpeed;
+
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded()) {
             //isGrounded = Physics2D.BoxCast(collider2D.bounds.center, collider2D.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
@@ -87,6 +102,12 @@ public class PlayerScript : MonoBehaviour
         bool isMoving = xInput != 0f;
 
         animator.SetBool("IsMoving", isMoving);
+
+        animator.SetBool("IsGrounded", IsGrounded());
+
+        animator.SetBool("IsDashing", dashTime > 0);
+
+        animator.SetFloat("yVelocity", rb.linearVelocityY);
 
     }
 

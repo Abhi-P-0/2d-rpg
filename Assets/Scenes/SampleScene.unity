@@ -225,7 +225,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -374,8 +374,8 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: f729b234c84f0ab448a2500c80d84ae2, type: 2}
+  m_GravityScale: 3.5
+  m_Material: {fileID: 6200000, guid: 5126bd57e22c800458b8c856acc0861c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -415,14 +415,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e1569c6871fea546ba9efd94263f373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 7
+  moveSpeed: 7
+  jumpForce: 12
+  dashSpeed: 25
+  dashDuration: 0.3
+  dashTime: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  groundCheckDistance: 0.1
-  bullet: {fileID: 4213673652995097140, guid: ef065ff39a3987b4ea88b495a317e301, type: 3}
-  bullSpawnPoint: {fileID: 2109365408}
+  groundCheckDistance: 0.2
 --- !u!70 &1237636935
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -652,8 +653,8 @@ Transform:
   m_GameObject: {fileID: 2086163664}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.23, y: -3.04, z: 0}
-  m_LocalScale: {x: 11.9276, y: 1, z: 1}
+  m_LocalPosition: {x: -0.36010027, y: -6.33, z: 0}
+  m_LocalScale: {x: 22.767403, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -863,7 +864,7 @@ Transform:
   m_GameObject: {fileID: 2118872024}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.65, y: -1.02, z: 0}
+  m_LocalPosition: {x: 15.48, y: -4.31, z: 0}
   m_LocalScale: {x: 11.9276, y: 7.9674, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
