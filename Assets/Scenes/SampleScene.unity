@@ -419,7 +419,7 @@ MonoBehaviour:
   jumpForce: 12
   dashSpeed: 25
   dashDuration: 0.3
-  dashTime: 0
+  dashCooldown: 5
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -472,6 +472,7 @@ GameObject:
   - component: {fileID: 1712116614}
   - component: {fileID: 1712116615}
   - component: {fileID: 1712116616}
+  - component: {fileID: 1712116617}
   m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
@@ -571,6 +572,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1712116617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712116613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e29bad42fb4603847a60fb75107136e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2086163664
 GameObject:
   m_ObjectHideFlags: 0

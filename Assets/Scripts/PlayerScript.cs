@@ -1,56 +1,58 @@
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour
-{
+public class PlayerScript : MonoBehaviour {
+
     [Header("Player Parameters")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
 
+
     [Header("Dash Info")]
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashDuration;
-    [SerializeField] private float dashTime;
+    private float dashTime;
+    [SerializeField] private float dashCooldown;
+    private float dashCooldownTimer;
+
+
+    [Header("Basic Attack Info")]
+    private bool isAttacking;
+    private int comboCounter;
+
 
     [Header("Ground collosion")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance;
 
-    
+
     private Rigidbody2D rb;
     private CapsuleCollider2D collider2D;
     private Animator animator;
 
     private float xInput;
-    
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    void Start() {
         rb = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<CapsuleCollider2D>();
         animator = GetComponentInChildren<Animator>();
-        
+
     }
 
+
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         PlayerInput();
 
         PlayerMovement();
 
         dashTime -= Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            dashTime = dashDuration;
-        }
-
-        if (dashTime > 0) {
-            Debug.Log("Dashing");
-        }
+        dashCooldownTimer -= Time.deltaTime;
 
         AnimatorController();
     }
+
 
     private void PlayerInput() {
         xInput = Input.GetAxis("Horizontal");
@@ -63,7 +65,17 @@ public class PlayerScript : MonoBehaviour
 
         }
 
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            isAttacking = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer < 0) {
+            dashTime = dashDuration;
+            dashCooldownTimer = dashCooldown;
+        }
+
     }
+
 
     private void PlayerMovement() {
         if (dashTime > 0) {
@@ -84,19 +96,34 @@ public class PlayerScript : MonoBehaviour
 
     }
 
+
     private void PlayerJump() {
         rb.linearVelocityY = jumpForce;
 
     }
+
 
     private bool IsGrounded() {
         return Physics2D.BoxCast(collider2D.bounds.center, collider2D.bounds.size, 0, Vector2.down, groundCheckDistance, groundLayer);
 
     }
 
+
     private void FlipPlayer() {
         transform.Rotate(0, 180, 0);
     }
+
+
+    public void AttackOver() {
+        isAttacking = false;
+
+        comboCounter++;
+
+        if (comboCounter > 2) {
+            comboCounter = 0;
+        }
+    }
+
 
     private void AnimatorController() {
         bool isMoving = xInput != 0f;
@@ -109,10 +136,16 @@ public class PlayerScript : MonoBehaviour
 
         animator.SetFloat("yVelocity", rb.linearVelocityY);
 
+        animator.SetBool("IsAttacking", isAttacking);
+
+        animator.SetInteger("ComboCounter", comboCounter);
+
     }
+
 
     private void OnDrawGizmos() {
         Gizmos.DrawCube(new Vector3(collider2D.bounds.center.x, collider2D.bounds.center.y - collider2D.bounds.size.y / 2), new Vector3(collider2D.bounds.size.x, groundCheckDistance));
 
     }
+
 }
