@@ -12,6 +12,8 @@ public class Entity : MonoBehaviour {
     protected Collider2D collider2D;
     protected Animator animator;
 
+    protected int facingDirection = 1;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start() {
@@ -31,16 +33,24 @@ public class Entity : MonoBehaviour {
 
     }
 
-    protected virtual void FlipSpriteFacingDirection() {
+    protected virtual void FlipSpriteMoveFaceDirection() {
         //if (xInput > 0.01f) {
         if (rigidbody2D.linearVelocityX > 0.01f) {
             transform.localScale = Vector3.one;
+
 
             //} else if (xInput < -0.01f) {
         } else if (rigidbody2D.linearVelocityX < -0.01f) {
             transform.localScale = new Vector3(-1, 1, 1);
 
         }
+        facingDirection *= -1;
+    }
+
+    protected virtual void FlipSprite() {
+        facingDirection *= -1;
+
+        transform.localScale = new Vector3(facingDirection, 1, 1);
     }
 
     protected virtual void OnDrawGizmos() {

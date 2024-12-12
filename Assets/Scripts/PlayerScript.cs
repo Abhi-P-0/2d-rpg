@@ -20,7 +20,6 @@ public class PlayerScript : Entity {
     private int comboCounter;
 
 
-
     private float xInput;
 
 
@@ -49,7 +48,7 @@ public class PlayerScript : Entity {
     private void PlayerInput() {
         xInput = Input.GetAxis("Horizontal");
 
-        FlipSpriteFacingDirection();
+        FlipSpriteMoveFaceDirection();
 
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             isAttacking = true;
@@ -61,8 +60,6 @@ public class PlayerScript : Entity {
         }
 
     }
-
-
 
 
     private void PlayerMovement() {
