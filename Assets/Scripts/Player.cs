@@ -2,11 +2,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    #region Components
+    public Animator animator {  get; private set; }
+
+    #endregion
+
+
+    #region States
     public PlayerStateMachine stateMachine {  get; private set; }
 
 
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
+
+    #endregion
 
     private void Awake() {
         stateMachine = new PlayerStateMachine();
@@ -18,7 +27,9 @@ public class Player : MonoBehaviour {
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-        stateMachine.Initialize(idleState);
+        animator = GetComponentInChildren<Animator>();
+        
+        stateMachine.Initialize(idleState);        
 
     }
 

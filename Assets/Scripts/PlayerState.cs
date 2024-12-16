@@ -18,7 +18,7 @@ public class PlayerState {
 
 
     public virtual void Enter() {
-        Debug.Log("I entered state: " + animBoolName);
+        player.animator.SetBool(this.animBoolName, true);
 
     }
 
@@ -30,7 +30,7 @@ public class PlayerState {
 
 
     public virtual void Exit() {
-        Debug.Log("I am exiting state: " + animBoolName);
+        player.animator.SetBool(this.animBoolName, false);
 
     }
 
