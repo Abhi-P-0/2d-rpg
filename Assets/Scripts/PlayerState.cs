@@ -1,10 +1,12 @@
-
 using UnityEngine;
 
 public class PlayerState {
     
     protected PlayerStateMachine stateMachine;
     protected Player player;
+    protected Rigidbody2D rigidbody2D;
+
+    protected float xInput;
 
     private string animBoolName;
 
@@ -20,11 +22,15 @@ public class PlayerState {
     public virtual void Enter() {
         player.animator.SetBool(this.animBoolName, true);
 
+        rigidbody2D = player.rigidbody2D;
+
     }
 
 
     public virtual void Update() {
-        Debug.Log("I am in state: " + animBoolName);
+        xInput = Input.GetAxisRaw("Horizontal");
+
+        player.animator.SetFloat("yVelocity", rigidbody2D.linearVelocityY);
 
     }
 
