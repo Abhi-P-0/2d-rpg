@@ -17,12 +17,9 @@ public class PlayerGroundedState : PlayerState {
     public override void Update() {
         base.Update();
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space) && player.IsGrounded()) {
             stateMachine.ChangeState(player.jumpState);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            stateMachine.ChangeState(player.dashState);
-        }
     }
 }

@@ -5,8 +5,12 @@ public class Player : MonoBehaviour {
     [Header("Movement Parameters")]
     public float moveSpeed = 8f;
     public float jumpForce = 12f;
+
+    [Header("Dash Parameters")]
     public float dashSpeed;
     public float dashDuration;
+    public float dashCooldown;
+    private float dashCDTimer;
 
 
     [Header("Collision Parameters")]
@@ -66,7 +70,21 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        DashManager();
+
         stateMachine.currentState.Update();
+
+    }
+
+    private void DashManager() {
+        dashCDTimer -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashCDTimer < 0) {
+            dashCDTimer = dashCooldown;
+
+            stateMachine.ChangeState(dashState);
+
+        }
 
     }
 

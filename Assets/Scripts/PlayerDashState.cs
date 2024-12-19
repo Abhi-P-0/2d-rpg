@@ -13,7 +13,7 @@ public class PlayerDashState : PlayerGroundedState {
     }
 
     public override void Exit() {
-        player.SetVelocity(0, rigidbody2D.linearVelocityY);
+        player.SetVelocity(0f, rigidbody2D.linearVelocityY);
 
         base.Exit();
     }
@@ -21,7 +21,7 @@ public class PlayerDashState : PlayerGroundedState {
     public override void Update() {
         base.Update();
 
-        player.SetVelocity(player.dashSpeed * player.transform.localScale.x, rigidbody2D.linearVelocityY);
+        player.SetVelocity(player.dashSpeed * player.transform.localScale.x, 0);
 
         if (stateTimer < 0) stateMachine.ChangeState(player.idleState);
 

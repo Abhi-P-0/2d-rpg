@@ -33,6 +33,7 @@ public class PlayerState {
 
         stateTimer -= Time.deltaTime;
 
+
         player.animator.SetFloat("yVelocity", rigidbody2D.linearVelocityY);
 
     }
