@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 1294219009}
   - component: {fileID: 1294219008}
   - component: {fileID: 1294219007}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,9 +372,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1573057137}
-  - component: {fileID: 1573057136}
   - component: {fileID: 1573057139}
   - component: {fileID: 1573057138}
+  - component: {fileID: 1573057136}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -395,6 +395,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
+  jumpForce: 12
+  dashSpeed: 25
+  dashDuration: 0.4
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckDistance: 0.2
+  facingDirection: 1
 --- !u!4 &1573057137
 Transform:
   m_ObjectHideFlags: 0

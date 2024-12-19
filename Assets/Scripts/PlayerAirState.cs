@@ -15,7 +15,7 @@ public class PlayerAirState : PlayerState {
     public override void Update() {
         base.Update();
 
-        if (rigidbody2D.linearVelocityY == 0) {
+        if (player.IsGrounded()) {
             stateMachine.ChangeState(player.idleState);
         }
     }
