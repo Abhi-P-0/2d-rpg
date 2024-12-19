@@ -21,5 +21,9 @@ public class PlayerGroundedState : PlayerState {
             stateMachine.ChangeState(player.jumpState);
         }
 
+        //if (!player.IsGrounded()) {
+        //    stateMachine.ChangeState(player.airState);
+        //}
+
     }
 }

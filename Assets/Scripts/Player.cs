@@ -38,6 +38,7 @@ public class Player : MonoBehaviour {
     public PlayerMoveState moveState { get; private set; }
     public PlayerJumpState jumpState { get; private set; }
     public PlayerAirState airState { get; private set; }
+    public PlayerWallSlideState wallSlideState { get; private set; }
     public PlayerDashState dashState { get; private set; }
 
     #endregion
@@ -54,6 +55,8 @@ public class Player : MonoBehaviour {
         airState = new PlayerAirState(this, stateMachine, "Jump");
 
         dashState = new PlayerDashState(this, stateMachine, "Dash");
+
+        wallSlideState = new PlayerWallSlideState(this, stateMachine, "WallSlide");
 
     }
 
@@ -74,6 +77,7 @@ public class Player : MonoBehaviour {
 
         stateMachine.currentState.Update();
 
+        
     }
 
     private void DashManager() {
@@ -92,6 +96,10 @@ public class Player : MonoBehaviour {
         return Physics2D.BoxCast(collider2D.bounds.center, collider2D.bounds.size, 0, Vector2.down, groundCheckDistance, groundLayer);
     }
 
+    public bool IsWallDetected() {
+        return Physics2D.Raycast(transform.position, Vector2.right * transform.localScale.x, 0.5f, groundLayer);
+    }
+
     public void SetVelocity(float _xVelocity, float _yVelocity) {
         if (_xVelocity > 0.01f) {
             transform.localScale = Vector3.one;
@@ -103,6 +111,10 @@ public class Player : MonoBehaviour {
 
         rigidbody2D.linearVelocity = new Vector2(_xVelocity, _yVelocity);
 
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + 1f * transform.localScale.x, transform.position.y));
     }
 
     public void FlipSprite() {
