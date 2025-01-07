@@ -9,6 +9,8 @@ public class PlayerIdleState : PlayerGroundedState {
     public override void Enter() {
         base.Enter();
 
+        rigidbody2D.linearVelocity = Vector2.zero;
+
     }
 
     public override void Exit() {
@@ -18,6 +20,10 @@ public class PlayerIdleState : PlayerGroundedState {
 
     public override void Update() {
         base.Update();
+
+        if (xInput == player.facingDir && player.WallDetected()) {
+            return;
+        }
 
         if (xInput != 0) {
             stateMachine.ChangeState(player.moveState);

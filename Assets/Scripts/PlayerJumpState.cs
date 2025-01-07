@@ -17,7 +17,7 @@ public class PlayerJumpState : PlayerState {
     public override void Update() {
         base.Update();
 
-        if (player.IsGrounded()) {
+        if (rigidbody2D.linearVelocityY < 0) {
             stateMachine.ChangeState(player.airState);
         }
     }

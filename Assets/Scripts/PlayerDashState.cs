@@ -21,9 +21,16 @@ public class PlayerDashState : PlayerGroundedState {
     public override void Update() {
         base.Update();
 
-        player.SetVelocity(player.dashSpeed * player.transform.localScale.x, 0);
+        if (!player.IsGrounded() && player.WallDetected()) {
+            stateMachine.ChangeState(player.wallSlideState);
+        }
 
-        if (stateTimer < 0) stateMachine.ChangeState(player.idleState);
+        player.SetVelocity(player.dashSpeed * player.dashDir, 0);
+
+        if (stateTimer < 0) { 
+            stateMachine.ChangeState(player.idleState);
+
+        }
 
     }
 }

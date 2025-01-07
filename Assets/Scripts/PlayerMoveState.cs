@@ -18,10 +18,10 @@ public class PlayerMoveState : PlayerGroundedState {
 
     public override void Update() {
         base.Update();
-
+                
         player.SetVelocity(xInput * player.moveSpeed, rigidbody2D.linearVelocityY);
 
-        if (xInput == 0) {
+        if (xInput == 0 || player.WallDetected()) {
             stateMachine.ChangeState(player.idleState);
         }
 

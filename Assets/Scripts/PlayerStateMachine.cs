@@ -4,7 +4,7 @@ public class PlayerStateMachine {
 
 
     public void Initialize(PlayerState _startState) {
-        this.currentState = _startState;
+        currentState = _startState;
 
         currentState.Enter();
 

@@ -6,21 +6,28 @@ public class Player : MonoBehaviour {
     public float moveSpeed = 8f;
     public float jumpForce = 12f;
 
+    
     [Header("Dash Parameters")]
     public float dashSpeed;
     public float dashDuration;
     public float dashCooldown;
     private float dashCDTimer;
+    public float dashDir {  get; private set; }
 
 
     [Header("Collision Parameters")]
-    public LayerMask groundLayer;
-    public float groundCheckDistance;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckDistance;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private float wallCheckDistance;
 
 
-    public int facingDirection = 1;
 
-
+    public int facingDir { get; private set; } = 1;
+    private bool facingRight = true;
+    
+    
     #region Components
 
     public Animator animator { get; private set; }
@@ -39,7 +46,10 @@ public class Player : MonoBehaviour {
     public PlayerJumpState jumpState { get; private set; }
     public PlayerAirState airState { get; private set; }
     public PlayerWallSlideState wallSlideState { get; private set; }
+    public PlayerWallJumpState wallJumpState { get; private set; }
     public PlayerDashState dashState { get; private set; }
+
+    public PlayerPrimaryAttack primaryAttackState { get; private set; }
 
     #endregion
 
@@ -57,6 +67,11 @@ public class Player : MonoBehaviour {
         dashState = new PlayerDashState(this, stateMachine, "Dash");
 
         wallSlideState = new PlayerWallSlideState(this, stateMachine, "WallSlide");
+
+        wallJumpState = new PlayerWallJumpState(this, stateMachine, "Jump");
+
+        primaryAttackState = new PlayerPrimaryAttack(this, stateMachine, "Attack");
+
 
     }
 
@@ -81,10 +96,17 @@ public class Player : MonoBehaviour {
     }
 
     private void DashManager() {
+        if (WallDetected()) {
+            return;
+
+        }
+
         dashCDTimer -= Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && dashCDTimer < 0) {
             dashCDTimer = dashCooldown;
+
+            dashDir = Input.GetAxisRaw("Horizontal");
 
             stateMachine.ChangeState(dashState);
 
@@ -93,32 +115,48 @@ public class Player : MonoBehaviour {
     }
 
     public bool IsGrounded() {
-        return Physics2D.BoxCast(collider2D.bounds.center, collider2D.bounds.size, 0, Vector2.down, groundCheckDistance, groundLayer);
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundLayer);
     }
 
-    public bool IsWallDetected() {
-        return Physics2D.Raycast(transform.position, Vector2.right * transform.localScale.x, 0.5f, groundLayer);
+    public bool WallDetected() {
+        return Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDistance, groundLayer);
     }
 
     public void SetVelocity(float _xVelocity, float _yVelocity) {
-        if (_xVelocity > 0.01f) {
-            transform.localScale = Vector3.one;
-
-        } else if (_xVelocity < -0.01f) {
-            transform.localScale = new Vector3(-1, 1, 1);
-
-        }
-
         rigidbody2D.linearVelocity = new Vector2(_xVelocity, _yVelocity);
 
-    }
+        FlipController(_xVelocity);
 
-    private void OnDrawGizmos() {
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + 1f * transform.localScale.x, transform.position.y));
     }
 
     public void FlipSprite() {
+        facingDir *= -1;
+
+        facingRight = !facingRight;
+
+        transform.Rotate(0, 180, 0);
 
     }
+
+    public void FlipController(float _x) {
+        if (_x > 0 && !facingRight) {
+            FlipSprite();
+
+        } else if (_x < 0 && facingRight) {
+            FlipSprite();
+
+        }
+
+    }
+
+    public void AnimationTrigger() {
+        stateMachine.currentState.AnimationFinishTrigger();
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
+    }
+
 
 }

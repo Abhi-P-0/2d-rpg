@@ -14,5 +14,29 @@ public class PlayerWallSlideState : PlayerState {
 
     public override void Update() {
         base.Update();
+
+        if (Input.GetKeyDown(KeyCode.Space)) { 
+            stateMachine.ChangeState(player.wallJumpState);
+
+            return;
+        }
+
+        if (xInput != 0 && player.facingDir != xInput) {
+            stateMachine.ChangeState(player.idleState);
+            
+        }
+        
+        if (yInput < 0) {
+            rigidbody2D.linearVelocityY = rigidbody2D.linearVelocityY;
+        
+        } else {
+            rigidbody2D.linearVelocityY *= 0.7f;
+
+        }
+
+
+        if (player.IsGrounded()) {
+            stateMachine.ChangeState(player.idleState);
+        }
     }
 }
